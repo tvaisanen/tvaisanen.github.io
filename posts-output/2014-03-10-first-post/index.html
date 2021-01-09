@@ -4,24 +4,24 @@
     <meta charset="utf-8"/>
     <title>tvaisanen.com: Auth0 SPA login flow with Shadow CLJS</title>
     
-<meta name="keywords" content="Auth0,Clojure,ClojureScript,Shadow-CLJS,JS Interop,cryogen,very fetch">
+<meta name="keywords" content="Auth0,Clojure,ClojureScript,Shadow-CLJS,JS Interop,very fetch">
 
 <meta name="description" content="Auth0 SPA login flow with Shadow CLJS">
 
 <meta property="og:description" content="Auth0 SPA login flow with Shadow CLJS">
 
-<meta property="og:url" content="http://tvaisanen.com/blog/posts-output/2014-03-10-first-post/" />
+<meta property="og:url" content="http://tvaisanen.com/posts-output/2014-03-10-first-post/" />
 <meta property="og:title" content="Auth0 SPA login flow with Shadow CLJS" />
 <meta property="og:type" content="article" />
 
-    <link rel="canonical" href="http://tvaisanen.com/blog/posts-output/2014-03-10-first-post/">
+    <link rel="canonical" href="http://tvaisanen.com/posts-output/2014-03-10-first-post/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700" rel="stylesheet"
           type="text/css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
-    <link href="/blog/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -35,20 +35,20 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/blog/">tvaisanen.com</a>
+            <a class="navbar-brand" href="/">tvaisanen.com</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li ><a href="/blog/">Home</a></li>
+                <li ><a href="/">Home</a></li>
                 <li
-                ><a href="/blog/archives/">Archives</a></li>
+                ><a href="/archives/">Archives</a></li>
                 
                 <li
                 >
-                <a href="/blog/pages-output/about/">About</a>
+                <a href="/pages-output/about/">About</a>
                 </li>
                 
-                <li><a href="/blog/feed.xml">RSS</a></li>
+                <li><a href="/feed.xml">RSS</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         More <span class="caret"></span></a>
@@ -57,18 +57,18 @@
                         <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
                         <li><a href="https://carmen.la/blog/archives/">Carmen's Blog</a></li>
                         
-                        <li><a href="/blog/pages-output/another-page/">Another Page</a></li>
+                        <li><a href="/pages-output/another-page/">Another Page</a></li>
                         
 
                         
                         <li class="divider"></li>
                         <li class="dropdown-header">Recent Posts</li>
                         
-                        <li><a href="/blog/posts-output/2021-01-09-cljs-auth0/">Auth0 SPA login flow with Shadow CLJS</a></li>
+                        <li><a href="/posts-output/2021-01-09-cljs-auth0/">Auth0 SPA login flow with Shadow CLJS</a></li>
                         
-                        <li><a href="/blog/posts-output/2020-12-03-docs/">Quick Start Guide</a></li>
+                        <li><a href="/posts-output/2014-11-04-second-post/">Yet Another Post</a></li>
                         
-                        <li><a href="/blog/posts-output/2014-11-04-second-post/">Yet Another Post</a></li>
+                        <li><a href="/posts-output/2014-03-10-first-post/">Auth0 SPA login flow with Shadow CLJS</a></li>
                         
                         
 
@@ -76,19 +76,17 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Tags</li>
                         
-                        <li><a href="/blog/tags-output/Auth0/">Auth0</a></li>
+                        <li><a href="/tags-output/Auth0/">Auth0</a></li>
                         
-                        <li><a href="/blog/tags-output/Clojure/">Clojure</a></li>
+                        <li><a href="/tags-output/Clojure/">Clojure</a></li>
                         
-                        <li><a href="/blog/tags-output/ClojureScript/">ClojureScript</a></li>
+                        <li><a href="/tags-output/ClojureScript/">ClojureScript</a></li>
                         
-                        <li><a href="/blog/tags-output/Shadow-CLJS/">Shadow-CLJS</a></li>
+                        <li><a href="/tags-output/Shadow-CLJS/">Shadow-CLJS</a></li>
                         
-                        <li><a href="/blog/tags-output/JS%20Interop/">JS Interop</a></li>
+                        <li><a href="/tags-output/JS%20Interop/">JS Interop</a></li>
                         
-                        <li><a href="/blog/tags-output/cryogen/">cryogen</a></li>
-                        
-                        <li><a href="/blog/tags-output/very%20fetch/">very fetch</a></li>
+                        <li><a href="/tags-output/very%20fetch/">very fetch</a></li>
                         
                         
                     </ul>
@@ -122,22 +120,22 @@
 <div id="post-tags">
     <b>Tags: </b>
     
-    <a href="/blog/tags-output/Auth0/">Auth0</a>
+    <a href="/tags-output/Auth0/">Auth0</a>
     
-    <a href="/blog/tags-output/Clojure/">Clojure</a>
+    <a href="/tags-output/Clojure/">Clojure</a>
     
-    <a href="/blog/tags-output/ClojureScript/">ClojureScript</a>
+    <a href="/tags-output/ClojureScript/">ClojureScript</a>
     
-    <a href="/blog/tags-output/Shadow-CLJS/">Shadow-CLJS</a>
+    <a href="/tags-output/Shadow-CLJS/">Shadow-CLJS</a>
     
-    <a href="/blog/tags-output/JS%20Interop/">JS Interop</a>
+    <a href="/tags-output/JS%20Interop/">JS Interop</a>
     
 </div>
 
 
     <div id="prev-next">
         
-        <a href="/blog/posts-output/2014-11-04-second-post/">&laquo; Yet Another Post</a>
+        <a href="/posts-output/2014-11-04-second-post/">&laquo; Yet Another Post</a>
         
         
     </div>
@@ -155,7 +153,7 @@
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="/blog/js/highlight.pack.js" type="application/javascript"></script>
+<script src="/js/highlight.pack.js" type="application/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
 

@@ -2,7 +2,7 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url>
 <loc>
-http://tvaisanen.com/blog/archives/index.html
+http://tvaisanen.com/archives/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -10,7 +10,7 @@ http://tvaisanen.com/blog/archives/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/404.html
+http://tvaisanen.com/404.html
 </loc>
 <lastmod>
 2021-01-09
@@ -18,7 +18,7 @@ http://tvaisanen.com/blog/404.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags/index.html
+http://tvaisanen.com/tags/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -26,7 +26,7 @@ http://tvaisanen.com/blog/tags/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/posts-output/2020-12-03-docs/index.html
+http://tvaisanen.com/posts-output/2014-03-10-first-post/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -34,7 +34,7 @@ http://tvaisanen.com/blog/posts-output/2020-12-03-docs/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/posts-output/2014-03-10-first-post/index.html
+http://tvaisanen.com/posts-output/2014-11-04-second-post/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -42,7 +42,7 @@ http://tvaisanen.com/blog/posts-output/2014-03-10-first-post/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/posts-output/2014-11-04-second-post/index.html
+http://tvaisanen.com/posts-output/2021-01-09-cljs-auth0/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -50,7 +50,7 @@ http://tvaisanen.com/blog/posts-output/2014-11-04-second-post/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/posts-output/2021-01-09-cljs-auth0/index.html
+http://tvaisanen.com/authors-output/Toni Väisänen/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -58,7 +58,7 @@ http://tvaisanen.com/blog/posts-output/2021-01-09-cljs-auth0/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/authors-output/Toni Väisänen/index.html
+http://tvaisanen.com/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -66,7 +66,7 @@ http://tvaisanen.com/blog/authors-output/Toni Väisänen/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/index.html
+http://tvaisanen.com/tags-output/Auth0/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -74,7 +74,7 @@ http://tvaisanen.com/blog/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/Auth0/index.html
+http://tvaisanen.com/tags-output/JS Interop/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -82,7 +82,7 @@ http://tvaisanen.com/blog/tags-output/Auth0/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/JS Interop/index.html
+http://tvaisanen.com/tags-output/Clojure/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -90,7 +90,7 @@ http://tvaisanen.com/blog/tags-output/JS Interop/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/Clojure/index.html
+http://tvaisanen.com/tags-output/Shadow-CLJS/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -98,7 +98,7 @@ http://tvaisanen.com/blog/tags-output/Clojure/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/Shadow-CLJS/index.html
+http://tvaisanen.com/tags-output/ClojureScript/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -106,7 +106,7 @@ http://tvaisanen.com/blog/tags-output/Shadow-CLJS/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/ClojureScript/index.html
+http://tvaisanen.com/tags-output/very fetch/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -114,7 +114,7 @@ http://tvaisanen.com/blog/tags-output/ClojureScript/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/cryogen/index.html
+http://tvaisanen.com/pages-output/about/index.html
 </loc>
 <lastmod>
 2021-01-09
@@ -122,23 +122,7 @@ http://tvaisanen.com/blog/tags-output/cryogen/index.html
 </url>
 <url>
 <loc>
-http://tvaisanen.com/blog/tags-output/very fetch/index.html
-</loc>
-<lastmod>
-2021-01-09
-</lastmod>
-</url>
-<url>
-<loc>
-http://tvaisanen.com/blog/pages-output/about/index.html
-</loc>
-<lastmod>
-2021-01-09
-</lastmod>
-</url>
-<url>
-<loc>
-http://tvaisanen.com/blog/pages-output/another-page/index.html
+http://tvaisanen.com/pages-output/another-page/index.html
 </loc>
 <lastmod>
 2021-01-09
