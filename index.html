@@ -97,23 +97,31 @@
 </div>
 <div>
     
-    <ul><li><a href="#sec-1">Initial setup</a></li><li><a href="#sec-2">First Iteration</a><ul><li><a href="#sec-2-1">Import dependencies</a></li><li><a href="#sec-2-2">Create login button component</a></li><li><a href="#sec-2-3">Create Auth0 Client</a></li><li><a href="#sec-2-4">First Login</a></li><li><a href="#sec-2-5">Handle Redirect</a></li><li><a href="#sec-2-6">Handle Session Initializaion</a></li><li><a href="#sec-2-7">Logout</a></li></ul></li><li><a href="#sec-3">Second Iteration</a><ul><li><a href="#sec-3-1">Install Re-Frame and setup refrisk</a></li><li><a href="#sec-3-2">Migrate from reagent atoms to re-frame.</a></li></ul></li></ul><h1 id="initial-setup">Initial setup<a id="sec-1"></a></h1><p>Create a new Clojurescript application to start with.</p><pre><code class="bash">npx create-cljs-app cljs-auth0-spa
-</code></pre><p>Install the following dependencies.</p><ul><li>reagent</li><li>auth0-spa-js</li></ul><p>Auth0-spa-js from npm. Clojurescript packages are downloaded automatically on the startup if not yet downloaded, when they are listed in the dependencies of `shadow-cljs.edn`.</p><pre><code class="bash">npm i @auth0/auth0-spa-js
-</code></pre><pre><code class="clojure">{:dependencies [[reagent "0.8.1"]]}
-</code></pre><p>Now you are ready to start the development server by running `npm start`. This will run the shadow-cljs cli that takes care of installing the clojurescript dependencies.</p><h1 id="first-iteration">First Iteration<a id="sec-2"></a></h1><p>Build the login flow here with reagent atoms.</p><h2 id="todo-import-dependencies">TODO Import dependencies<a id="sec-2-1"></a></h2><p>Reagent and Re-Frame from their respective Clojure packages. NPM package "auth0/auth0-spa-js" can be imported by the package name. Read more about the npm package imports from <a href="https://shadow-cljs.github.io/docs/UsersGuide.html#_using_npm_packages">Shadow CLJS documentation</a>.</p><pre><code class="clojure">(ns app.hello
-  (:require [reagent.core :as r]
-            ["@auth0/auth0-spa-js" :as auth0]))
-</code></pre><h2 id="todo-create-login-button-component">TODO Create login button component<a id="sec-2-2"></a></h2><ul><li>Create login button
-<ul><li>use alert login as a placeholder action</li></ul></li><li>Create home component</li><li>Mount login button</li></ul><pre><code class="clojure">(defn login-button []
-   [:button
-    {:on-click #(.alert js/window "LOGIN")} "Login"])
+    <h1 id="table-of-contents">Table of Contents</h1><ol><li><a href="#orgb83cd7b">Import dependencies</a></li><li><a href="#org8b1e848">Create login button component</a></li><li><a href="#org46a5e39">Create Auth0 Client</a></li><li><a href="#orgd80d997">Login With Redirect</a></li><li><a href="#org68e7609">Handle Redirect or Initialize token silently</a></li><li><a href="#org51c9e9b">Everything Put Together</a></li></ol><p><a id="orgebe299f"></a></p><h1 id="initial-setup">Initial setup</h1><p>Create a new Clojurescript application to start with.</p><pre><code>npx create-cljs-app cljs-auth0-spa
+</code></pre><p>Install the dependencies.</p><ul><li>reagent</li><li>auth0-spa-js</li></ul><p>Auth0-spa-js from npm. Clojurescript packages are downloaded automatically
+on the startup if not yet downloaded, when they are listed in the dependencies
+of <code>=shadow-cljs.edn</code>.</p><pre><code>npm i @auth0/auth0-spa-js
+
+{:dependencies [[reagent "0.8.1"]]}
+</code></pre><p>The the development server is started by running <code>=npm start</code>.
+This will run the shadow-cljs cli that takes care of installing the clojurescript
+dependencies.</p><p><a id="orgb83cd7b"></a></p><h2 id="import-dependencies">Import dependencies</h2><p>Reagent as clojuresciprt deps packages.
+NPM package <code>auth0/auth0-spa-js</code> can be imported by the package name.
+Read more about the npm package imports from <a href="https://shadow-cljs.github.io/docs/UsersGuide.html#_using_npm_packages">Shadow CLJS documentation</a>.</p><pre><code>(ns app.home
+ (:require [reagent.core :as r]
+           [app.config :as c]
+           [clojure.string :as str]
+           ["@auth0/auth0-spa-js" :as auth0]))
+</code></pre><p><a id="org8b1e848"></a></p><h2 id="todo-create-login-button-component">TODO Create login button component</h2><pre><code>(defn login-button []
+    [:button
+      {:on-click #(.alert js/window "LOGIN")} "Login"])
 
 (defn home []
-  [:&lt;&gt;
-   [:h1 "Auth0 SPA CLJS"]
-   [login-button]])
+    [:&lt;&gt;
+    [:h1 "Auth0 SPA CLJS"]
+    [login-button]])
 
-</code></pre><pre><code class="clojure">(ns app.core
+(ns app.core
   "This namespace contains your application and is the entrypoint for 'yarn start'."
   (:require [reagent.core :as r]
             [app.home :as home]))
@@ -127,34 +135,157 @@
   "Run application startup logic."
   []
   (render))
-
-</code></pre><h2 id="todo-create-auth0-client">TODO Create Auth0 Client<a id="sec-2-3"></a></h2><pre><code class="clojurescript">
-(defonce auth0-client
+</code></pre><p><a id="org46a5e39"></a></p><h2 id="create-auth0-client">Create Auth0 Client</h2><p>Get the credentials from the Auth0 dashboard.</p><pre><code>(defonce auth0-client
   (auth0/Auth0Client.
    (clj-&gt;js {:client_id ""
              :domain ""
              :redirect_uri""
              })))
+</code></pre><p><a id="orgd80d997"></a></p><h2 id="login-with-redirect">Login With Redirect</h2><pre><code>(defn login [] (.loginWithRedirect auth0-client))
+</code></pre><p><a id="org68e7609"></a></p><h2 id="handle-redirect-or-initialize-token-silently">Handle Redirect or Initialize token silently</h2><p>After successfull redirect the the id token call <code>auth0client.handleRedirectCallback</code>.</p><pre><code>(defn handle-auth-redirect []
+  (-&gt;
+   (.handleRedirectCallback auth0client)
+   (.then load-profile)))
 
-</code></pre><h2 id="todo-first-login">TODO First Login<a id="sec-2-4"></a></h2><pre><code class="clojure">(defn login [] (.loginWithRedirect auth0-client))
-</code></pre><h2 id="todo-handle-redirect">TODO Handle Redirect<a id="sec-2-5"></a></h2><pre><code class="clojure">
-(defn should-handle-redirect?
-    "Check URL search parameters for code and state.
-     Auth0 returns these on redirect after successfull login."
-        [],,,)
+(defn load-silently []
+  (pr "load silently")
+  (-&gt; (.getTokenSilently auth0client)
+      (.then load-profile)
+      (.catch #(pr %))))
 
-(defn init-session []
-  (if (should-handle-redirect?)
-      (handle-redirect)
-      (init-session)))
 
-(defn on-load-window [](init-session)
+     (defn handle-redirect?
+       "
+       Handle auth0 redirect?
 
- (.addEventListener js/window "load" on-load-window)
-</code></pre><h2 id="todo-handle-session-initializaion">TODO Handle Session Initializaion<a id="sec-2-6"></a></h2><h2 id="todo-logout">TODO Logout<a id="sec-2-7"></a></h2><h1 id="second-iteration">Second Iteration<a id="sec-3"></a></h1><p>Clean up the implementation. Install reframe and devtool refrisk.</p><h2 id="todo-install-re-frame-and-setup-refrisk">TODO Install Re-Frame and setup refrisk<a id="sec-3-1"></a></h2><pre><code class="clojure">{:dependencies [[reagent "0.8.1"]
-                ;; add re-frame
-                [re-frame "1.1.2"]]}
-</code></pre><h2 id="todo-migrate-from-reagent-atoms-to-re-frame">TODO Migrate from reagent atoms to re-frame.<a id="sec-3-2"></a></h2>
+       Should handle redirect if state and code query params.
+       "
+       []
+       (let [params (url-search-params)]
+         (and
+          (.has params "state")
+          (.has params "code"))))
+
+     (defn init-session []
+       (if (should-handle-redirect?)
+           (handle-redirect)
+           (init-session)))
+
+     (defn on-load-window [](init-session)
+       (.addEventListener js/window "load" on-load-window)
+</code></pre><p><a id="org51c9e9b"></a></p><h2 id="everything-put-together">Everything Put Together</h2><pre><code>(ns app.core
+  "This namespace contains your application and is the entrypoint for 'yarn start'."
+  (:require [reagent.core :as r]
+            [app.home :as home]
+            [app.config :as c]
+            [clojure.string :as str]
+            ["@auth0/auth0-spa-js" :as auth0]))
+
+(enable-console-print!)
+
+(defonce auth0client
+  (auth0/Auth0Client.
+  (clj-&gt;js c/auth0)))
+
+(defn url-search-params
+  "Parse URLSearchParams from window location."
+  []
+  (-&gt; js/window.location.href
+      (str/split "?")
+      (get 1)
+      (js/URLSearchParams.)))
+
+(defn handle-redirect?
+  "
+  Handle auth0 redirect?
+
+  Should handle redirect if state and code query params.
+  "
+  []
+  (let [params (url-search-params)]
+    (and
+    (.has params "state")
+    (.has params "code"))))
+
+(def raw_token (atom nil))
+
+(defn auth-action-to-take
+  "Decide whether to handle a redirect or try to initialize session silently."
+  []
+  (pr "What auth action to take?")
+  (if (handle-redirect?)
+    :handle-redirect
+    :load-silently))
+
+(def profile (r/atom {}))
+(def errors  (r/atom {}))
+
+(defn set-error [e] (reset! errors e))
+
+(defn id-token-claims-to-user [claims]
+  (let [claims-map (js-&gt;clj claims :keywordize-keys true)]
+    ;; save the claims to
+    (reset! profile claims-map)))
+
+(defn load-profile []
+  (-&gt;
+    (.getIdTokenClaims auth0client)
+    (.then id-token-claims-to-user)
+    (.catch set-error)
+    (.finally (pr "load-profile: finally"))))
+
+(defn handle-auth-redirect []
+  (-&gt;
+    (.handleRedirectCallback auth0client)
+    (.then load-profile)))
+
+(defn load-silently []
+  (pr "load silently")
+  (-&gt; (.getTokenSilently auth0client)
+      (.then load-profile)
+      (.catch #(pr %))))
+
+(defn on-window-load []
+  (pr "on window load")
+  (case (auth-action-to-take)
+    :handle-redirect  (handle-auth-redirect)
+    :load-silently  (load-silently)
+    (pr "no action")))
+
+(.addEventListener js/window "load" on-window-load)
+
+(defn on-login [] (.loginWithRedirect auth0client))
+(defn on-logout [] (.logout auth0client))
+
+(defn login-button []
+  [:button
+  {:on-click on-login} "Login"])
+
+(defn logout-button []
+  [:button
+  {:on-click on-logout} "Logout"])
+
+(defn view []
+  [:&lt;&gt;
+  [:h1 "Auth0 SPA CLJS"]
+  (when (not @profile) [login-button])
+  (when @profile [logout-button])
+  [:pre (.stringify js/JSON (clj-&gt;js c/auth0) nil 2)]
+  [:pre (.stringify js/JSON (clj-&gt;js @errors) nil 2)]
+  [:pre (.stringify js/JSON (clj-&gt;js @profile) nil 2)]])
+
+
+(defn ^:dev/after-load render
+  "Render the toplevel component for this app."
+  []
+  (r/render [home/view] (.getElementById js/document "app")))
+
+
+(defn ^:export main
+  "Run application startup logic."
+  []
+  (render))
+</code></pre>
 </div>
 
 <div id="post-tags">
