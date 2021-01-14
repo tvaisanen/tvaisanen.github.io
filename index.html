@@ -52,6 +52,8 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Recent Posts</li>
                         
+                        <li><a href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/">Getting Started With Datalog and Datahike</a></li>
+                        
                         <li><a href="/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/">Auth0 SPA login flow with Shadow CLJS</a></li>
                         
                         
@@ -60,9 +62,13 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Tags</li>
                         
-                        <li><a href="/tags-output/Auth0/">Auth0</a></li>
+                        <li><a href="/tags-output/Datahike/">Datahike</a></li>
                         
                         <li><a href="/tags-output/Clojure/">Clojure</a></li>
+                        
+                        <li><a href="/tags-output/Datalog/">Datalog</a></li>
+                        
+                        <li><a href="/tags-output/Auth0/">Auth0</a></li>
                         
                         <li><a href="/tags-output/ClojureScript/">ClojureScript</a></li>
                         
@@ -90,228 +96,138 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">January 9, 2021</div>
+        <div class="col-lg-6">January 14, 2021</div>
         
     </div>
-    <h2>Auth0 SPA login flow with Shadow CLJS</h2>
+    <h2>Getting Started With Datalog and Datahike</h2>
 </div>
 <div>
     
-    <h1 id="table-of-contents">Table of Contents</h1><ol><li><a href="#orgb83cd7b">Import dependencies</a></li><li><a href="#org8b1e848">Create login button component</a></li><li><a href="#org46a5e39">Create Auth0 Client</a></li><li><a href="#orgd80d997">Login With Redirect</a></li><li><a href="#org68e7609">Handle Redirect or Initialize token silently</a></li><li><a href="#org51c9e9b">Everything Put Together</a></li></ol><p><a id="orgebe299f"></a></p><h1 id="initial-setup">Initial setup</h1><p>Create a new Clojurescript application to start with.</p><pre><code>npx create-cljs-app cljs-auth0-spa
-</code></pre><p>Install the dependencies.</p><ul><li>reagent</li><li>auth0-spa-js</li></ul><p>Auth0-spa-js from npm. Clojurescript packages are downloaded automatically
-on the startup if not yet downloaded, when they are listed in the dependencies
-of <code>=shadow-cljs.edn</code>.</p><pre><code>npm i @auth0/auth0-spa-js
+    <h1 id="table-of-contents">Table of Contents</h1><ol><li><a href="#org926352f">Getting Started With Datalog and Datahike</a><ol><li><a href="#org10812a7">Add dependencies and create a database</a></li><li><a href="#orgda6af90">Add Example Data</a></li><li><a href="#org6e549e6">Basic Queries</a><ol><li><a href="#org26f23ea">Basic query with explicit properties.</a></li><li><a href="#org4e1a75e">Pull all properties</a></li><li><a href="#orgd96072d">Add a predicate function</a></li><li><a href="#orga8338e5">Add a second predicate</a></li></ol></li><li><a href="#org255f136">Transactions</a></li><li><a href="#orgcd9ca35">History</a></li></ol></li></ol><p><a id="org926352f"></a></p><h1 id="getting-started-with-datalog-with-datahike">Getting Started With Datalog with Datahike</h1><ul><li>What is datalog <a href="https://en.wikipedia.org/wiki/Datalog">https://en.wikipedia.org/wiki/Datalog</a>.</li><li>Learn datalog  <a href="https://learndatalogtoday.org">https://learndatalogtoday.org</a>.</li><li>Database implementations:
+<ul><li><a href="https://www.datomic.com/">https://www.datomic.com/</a></li><li><a href="https://github.com/tonsky/datascript">https://github.com/tonsky/datascript</a></li><li><a href="https://github.com/replikativ/datahike">https://github.com/replikativ/datahike</a></li></ul></li></ul><p><a id="org10812a7"></a></p><h2 id="add-dependencies-and-create-a-database">Add dependencies and create a database</h2><pre><code>:dependencies [[org.clojure/clojure "1.10.1"]
+               [io.replikativ/datahike "0.3.2"]]
+</code></pre><p>Import Datahike API as d and from export-db for DB introspection and create basic configuration for an in-memory database.</p><pre><code>(ns datahike-test.core
+  (:require [datahike.api :as d]
+            [datahike.migrate :refer [export-db]])
+  (:gen-class))
 
-{:dependencies [[reagent "0.8.1"]]}
-</code></pre><p>The the development server is started by running <code>=npm start</code>.
-This will run the shadow-cljs cli that takes care of installing the clojurescript
-dependencies.</p><p><a id="orgb83cd7b"></a></p><h2 id="import-dependencies">Import dependencies</h2><p>Reagent as clojuresciprt deps packages.
-NPM package <code>auth0/auth0-spa-js</code> can be imported by the package name.
-Read more about the npm package imports from <a href="https://shadow-cljs.github.io/docs/UsersGuide.html#_using_npm_packages">Shadow CLJS documentation</a>.</p><pre><code>(ns app.home
- (:require [reagent.core :as r]
-           [app.config :as c]
-           [clojure.string :as str]
-           ["@auth0/auth0-spa-js" :as auth0]))
-</code></pre><p><a id="org8b1e848"></a></p><h2 id="todo-create-login-button-component">TODO Create login button component</h2><pre><code>(defn login-button []
-    [:button
-      {:on-click #(.alert js/window "LOGIN")} "Login"])
+(def cfg {:schema-flexibility :read ;; allow write without explicit schema
+          :store {:backend :mem}})  ;; use in-memory database
 
-(defn home []
-    [:&lt;&gt;
-    [:h1 "Auth0 SPA CLJS"]
-    [login-button]])
+(d/create-database cfg)
 
-(ns app.core
-  "This namespace contains your application and is the entrypoint for 'yarn start'."
-  (:require [reagent.core :as r]
-            [app.home :as home]))
+(def conn (d/connect cfg))
+</code></pre><p><a id="orgda6af90"></a></p><h2 id="add-example-data">Add Example Data</h2><pre><code>(d/transact conn {:tx-data [{:db/id 4
+                             :job "Clojure Fullstack"
+                             :position :fullstack-developer
+                             :languages #{:javascript :clojure}}
+                            {:db/id -1
+                             :job "Clojure Backend Developer"
+                             :position :backend-developer
+                             :languages #{:clojure}}
+                            {:db/id -1
+                             :job "Javascript Fullstack"
+                             :position :fullstack-developer
+                             :languages #{:javascript}}]})
+</code></pre><p>Create DB dump for Datoms to a file for introspection</p><pre><code>(export-db @conn "./eavt-dump")
 
-(defn ^:dev/after-load render
-  "Render the toplevel component for this app."
-  []
-  (r/render [home/view] (.getElementById js/document "app")))
+#datahike/Datom [4 :job "Clojure Fullstack" 536870914 true]
+#datahike/Datom [4 :languages #{:javascript :clojure} 536870914 true]
+#datahike/Datom [4 :position :fullstack-developer 536870914 true]
 
-(defn ^:export main
-  "Run application startup logic."
-  []
-  (render))
-</code></pre><p><a id="org46a5e39"></a></p><h2 id="create-auth0-client">Create Auth0 Client</h2><p>Get the credentials from the Auth0 dashboard.</p><pre><code>(defonce auth0-client
-  (auth0/Auth0Client.
-   (clj-&gt;js {:client_id ""
-             :domain ""
-             :redirect_uri""
-             })))
-</code></pre><p><a id="orgd80d997"></a></p><h2 id="login-with-redirect">Login With Redirect</h2><pre><code>(defn login [] (.loginWithRedirect auth0-client))
-</code></pre><p><a id="org68e7609"></a></p><h2 id="handle-redirect-or-initialize-token-silently">Handle Redirect or Initialize token silently</h2><p>After successfull redirect the the id token call <code>auth0client.handleRedirectCallback</code>.</p><pre><code>(defn handle-auth-redirect []
-  (-&gt;
-   (.handleRedirectCallback auth0client)
-   (.then load-profile)))
+#datahike/Datom [5 :job "Clojure Backend Developer" 536870915 true]
+#datahike/Datom [5 :languages #{:clojure} 536870915 true]
+#datahike/Datom [5 :position :backend-developer 536870915 true]
 
-(defn load-silently []
-  (pr "load silently")
-  (-&gt; (.getTokenSilently auth0client)
-      (.then load-profile)
-      (.catch #(pr %))))
+#datahike/Datom [6 :job "Javascript Fullstack" 536870916 true]
+#datahike/Datom [6 :languages #{:javascript} 536870916 true]
+#datahike/Datom [6 :position :fullstack-developer 536870916 true]
+</code></pre><p><a id="org6e549e6"></a></p><h2 id="basic-queries">Basic Queries</h2><p><a id="org26f23ea"></a></p><h3 id="basic-query-with-explicit-properties">Basic query with explicit properties.</h3><pre><code>(d/q '[:find ?e ?title ?langs
+       :where
+       [?e :position ?title]
+       [?e :languages ?langs]]
+     @conn)
 
+#{[5 :backend-developer #{:clojure}]
+  [6 :fullstack-developer #{:javascript}]
+  [4 :fullstack-developer #{:javascript :clojure}]}
+</code></pre><p><a id="org4e1a75e"></a></p><h3 id="pull-all-properties">Pull all properties</h3><p>Get all the jobs for clojure fullstack. Use the <code>(pull? ?e [*])</code> to
+pull all fields of entity <code>?e</code> and use the ellipsis <code>...</code> to pull a set of
+entities instead just of the first one.</p><pre><code>(d/q '[:find [(pull ?e [*]) ...]
+       :where
+       [?e :position ?title]
+       [?e :languages ?langs]]
+     @conn)
 
-     (defn handle-redirect?
-       "
-       Handle auth0 redirect?
+[{:db/id 4,
+  :job "Clojure Fullstack",
+  :languages #{:javascript :clojure},
+  :position :fullstack-developer}
+ {:db/id 6,
+  :job "Javascript Fullstack",
+  :languages #{:javascript},
+  :position :fullstack-developer}
+ {:db/id 5,
+  :job "Clojure Backend Developer",
+  :languages #{:clojure},
+  :position :backend-developer}]
+</code></pre><p><a id="orgd96072d"></a></p><h3 id="add-a-predicate-function">Add a predicate function</h3><p>Filter clojure jobs.</p><pre><code>(d/q '[:find [(pull ?e [*]) ...]
+       :in $ [?l]
+       :where
+       [?e :position ?title]
+       [?e :languages ?langs]
+       [(contains? ?langs ?l)]]
+     @conn
+     [:clojure])
 
-       Should handle redirect if state and code query params.
-       "
-       []
-       (let [params (url-search-params)]
-         (and
-          (.has params "state")
-          (.has params "code"))))
+[{:db/id 4,
+  :job "Clojure Fullstack",
+  :languages #{:javascript :clojure},
+  :position :fullstack-developer}
+ {:db/id 5,
+  :job "Clojure Backend Developer",
+  :languages #{:clojure},
+  :position :backend-developer}]
+</code></pre><p><a id="orga8338e5"></a></p><h3 id="add-a-second-predicate">Add a second predicate</h3><p>Filter only the clojure backend jobs.</p><pre><code>(d/q '[:find [(pull ?e [*]) ...]
+       :in $ [?l ?p]
+       :where
+       [?e :position ?title]
+       [?e :languages ?langs]
+       [?e :position ?pos]
+       [(contains? ?langs ?l)]
+       [(= ?pos ?p)]]
+     @conn
+     [:clojure :backend-developer])
 
-     (defn init-session []
-       (if (should-handle-redirect?)
-           (handle-redirect)
-           (init-session)))
-
-     (defn on-load-window [](init-session)
-       (.addEventListener js/window "load" on-load-window)
-</code></pre><p><a id="org51c9e9b"></a></p><h2 id="everything-put-together">Everything Put Together</h2><pre><code>(ns app.core
-  "This namespace contains your application and is the entrypoint for 'yarn start'."
-  (:require [reagent.core :as r]
-            [app.home :as home]
-            [app.config :as c]
-            [clojure.string :as str]
-            ["@auth0/auth0-spa-js" :as auth0]))
-
-(enable-console-print!)
-
-(defonce auth0client
-  (auth0/Auth0Client.
-  (clj-&gt;js c/auth0)))
-
-(defn url-search-params
-  "Parse URLSearchParams from window location."
-  []
-  (-&gt; js/window.location.href
-      (str/split "?")
-      (get 1)
-      (js/URLSearchParams.)))
-
-(defn handle-redirect?
-  "
-  Handle auth0 redirect?
-
-  Should handle redirect if state and code query params.
-  "
-  []
-  (let [params (url-search-params)]
-    (and
-    (.has params "state")
-    (.has params "code"))))
-
-(def raw_token (atom nil))
-
-(defn auth-action-to-take
-  "Decide whether to handle a redirect or try to initialize session silently."
-  []
-  (pr "What auth action to take?")
-  (if (handle-redirect?)
-    :handle-redirect
-    :load-silently))
-
-(def profile (r/atom {}))
-(def errors  (r/atom {}))
-
-(defn set-error [e] (reset! errors e))
-
-(defn id-token-claims-to-user [claims]
-  (let [claims-map (js-&gt;clj claims :keywordize-keys true)]
-    ;; save the claims to
-    (reset! profile claims-map)))
-
-(defn load-profile []
-  (-&gt;
-    (.getIdTokenClaims auth0client)
-    (.then id-token-claims-to-user)
-    (.catch set-error)
-    (.finally (pr "load-profile: finally"))))
-
-(defn handle-auth-redirect []
-  (-&gt;
-    (.handleRedirectCallback auth0client)
-    (.then load-profile)))
-
-(defn load-silently []
-  (pr "load silently")
-  (-&gt; (.getTokenSilently auth0client)
-      (.then load-profile)
-      (.catch #(pr %))))
-
-(defn on-window-load []
-  (pr "on window load")
-  (case (auth-action-to-take)
-    :handle-redirect  (handle-auth-redirect)
-    :load-silently  (load-silently)
-    (pr "no action")))
-
-(.addEventListener js/window "load" on-window-load)
-
-(defn on-login [] (.loginWithRedirect auth0client))
-(defn on-logout [] (.logout auth0client))
-
-(defn login-button []
-  [:button
-  {:on-click on-login} "Login"])
-
-(defn logout-button []
-  [:button
-  {:on-click on-logout} "Logout"])
-
-(defn view []
-  [:&lt;&gt;
-  [:h1 "Auth0 SPA CLJS"]
-  (when (not @profile) [login-button])
-  (when @profile [logout-button])
-  [:pre (.stringify js/JSON (clj-&gt;js c/auth0) nil 2)]
-  [:pre (.stringify js/JSON (clj-&gt;js @errors) nil 2)]
-  [:pre (.stringify js/JSON (clj-&gt;js @profile) nil 2)]])
-
-
-(defn ^:dev/after-load render
-  "Render the toplevel component for this app."
-  []
-  (r/render [home/view] (.getElementById js/document "app")))
-
-
-(defn ^:export main
-  "Run application startup logic."
-  []
-  (render))
-</code></pre>
+[{:db/id 5,
+  :job "Clojure Backend Developer",
+  :languages #{:clojure},
+  :position :backend-developer}]
+</code></pre><p><a id="org255f136"></a></p><h2 id="todo-transactions">TODO Transactions</h2><ul><li>transaction introspection</li></ul><p><a id="orgcd9ca35"></a></p><h2 id="todo-history">TODO History</h2><ul><li>Query history</li></ul>
 </div>
 
 <div id="post-tags">
     <b>Tags: </b>
     
-    <a href="/tags-output/Auth0/">Auth0</a>
+    <a href="/tags-output/Datahike/">Datahike</a>
     
     <a href="/tags-output/Clojure/">Clojure</a>
     
-    <a href="/tags-output/ClojureScript/">ClojureScript</a>
-    
-    <a href="/tags-output/Shadow-CLJS/">Shadow-CLJS</a>
-    
-    <a href="/tags-output/JS%20Interop/">JS Interop</a>
+    <a href="/tags-output/Datalog/">Datalog</a>
     
 </div>
 
 
     
     <div id="comments">
-        <a href="/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/#disqus_thread">View Comments</a>
+        <a href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/#disqus_thread">View Comments</a>
     </div>
     
 
     <div id="prev-next">
         
+        
+        <a class="right" href="/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/">Auth0 SPA login flow with Shadow CLJS &raquo;</a>
         
     </div>
 </div>

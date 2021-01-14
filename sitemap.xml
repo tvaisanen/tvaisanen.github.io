@@ -5,7 +5,7 @@
 http://tvaisanen.com/archives/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -13,7 +13,7 @@ http://tvaisanen.com/archives/index.html
 http://tvaisanen.com/404.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -21,7 +21,7 @@ http://tvaisanen.com/404.html
 http://tvaisanen.com/tags/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -29,7 +29,15 @@ http://tvaisanen.com/tags/index.html
 http://tvaisanen.com/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
+</lastmod>
+</url>
+<url>
+<loc>
+http://tvaisanen.com/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/index.html
+</loc>
+<lastmod>
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -37,7 +45,7 @@ http://tvaisanen.com/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/index.html
 http://tvaisanen.com/authors-output/Toni Väisänen/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -45,7 +53,7 @@ http://tvaisanen.com/authors-output/Toni Väisänen/index.html
 http://tvaisanen.com/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -53,7 +61,7 @@ http://tvaisanen.com/index.html
 http://tvaisanen.com/tags-output/Auth0/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -61,7 +69,7 @@ http://tvaisanen.com/tags-output/Auth0/index.html
 http://tvaisanen.com/tags-output/JS Interop/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -69,7 +77,7 @@ http://tvaisanen.com/tags-output/JS Interop/index.html
 http://tvaisanen.com/tags-output/Clojure/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -77,7 +85,23 @@ http://tvaisanen.com/tags-output/Clojure/index.html
 http://tvaisanen.com/tags-output/Shadow-CLJS/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
+</lastmod>
+</url>
+<url>
+<loc>
+http://tvaisanen.com/tags-output/Datalog/index.html
+</loc>
+<lastmod>
+2021-01-14
+</lastmod>
+</url>
+<url>
+<loc>
+http://tvaisanen.com/tags-output/Datahike/index.html
+</loc>
+<lastmod>
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -85,7 +109,7 @@ http://tvaisanen.com/tags-output/Shadow-CLJS/index.html
 http://tvaisanen.com/tags-output/ClojureScript/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 <url>
@@ -93,7 +117,7 @@ http://tvaisanen.com/tags-output/ClojureScript/index.html
 http://tvaisanen.com/pages-output/about/index.html
 </loc>
 <lastmod>
-2021-01-12
+2021-01-14
 </lastmod>
 </url>
 </urlset>
