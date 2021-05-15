@@ -110,7 +110,7 @@
 </div>
 <div>
     
-    <h1 id="table-of-contents">Table of Contents</h1><ol><li><a href="#orgb83cd7b">Import dependencies</a></li><li><a href="#org8b1e848">Create login button component</a></li><li><a href="#org46a5e39">Create Auth0 Client</a></li><li><a href="#orgd80d997">Login With Redirect</a></li><li><a href="#org68e7609">Handle Redirect or Initialize token silently</a></li><li><a href="#org51c9e9b">Everything Put Together</a></li></ol><p><a id="orgebe299f"></a></p><h1 id="initial-setup">Initial setup</h1><p>Create a new Clojurescript application to start with.</p><pre><code>npx create-cljs-app cljs-auth0-spa
+    <h1 id="table-of-contents">Table of Contents</h1><ol><li><a href="#orgb83cd7b">Import dependencies</a></li><li><a href="#org46a5e39">Create Auth0 Client</a></li><li><a href="#orgd80d997">Login With Redirect</a></li><li><a href="#org68e7609">Handle Redirect or Initialize token silently</a></li><li><a href="#org51c9e9b">Everything Put Together</a></li></ol><p><a id="orgebe299f"></a></p><h1 id="initial-setup">Initial setup</h1><p>Create a new Clojurescript application to start with.</p><pre><code>npx create-cljs-app cljs-auth0-spa
 </code></pre><p>Install the dependencies.</p><ul><li>reagent</li><li>auth0-spa-js</li></ul><p>Auth0-spa-js from npm. Clojurescript packages are downloaded automatically
 on the startup if not yet downloaded, when they are listed in the dependencies
 of <code>=shadow-cljs.edn</code>.</p><pre><code>npm i @auth0/auth0-spa-js
