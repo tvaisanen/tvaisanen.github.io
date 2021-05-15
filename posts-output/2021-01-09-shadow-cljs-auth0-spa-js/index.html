@@ -125,29 +125,6 @@ Read more about the npm package imports from <a href="https://shadow-cljs.github
            [app.config :as c]
            [clojure.string :as str]
            ["@auth0/auth0-spa-js" :as auth0]))
-</code></pre><p><a id="org8b1e848"></a></p><h2 id="todo-create-login-button-component">TODO Create login button component</h2><pre><code>(defn login-button []
-    [:button
-      {:on-click #(.alert js/window "LOGIN")} "Login"])
-
-(defn home []
-    [:&lt;&gt;
-    [:h1 "Auth0 SPA CLJS"]
-    [login-button]])
-
-(ns app.core
-  "This namespace contains your application and is the entrypoint for 'yarn start'."
-  (:require [reagent.core :as r]
-            [app.home :as home]))
-
-(defn ^:dev/after-load render
-  "Render the toplevel component for this app."
-  []
-  (r/render [home/view] (.getElementById js/document "app")))
-
-(defn ^:export main
-  "Run application startup logic."
-  []
-  (render))
 </code></pre><p><a id="org46a5e39"></a></p><h2 id="create-auth0-client">Create Auth0 Client</h2><p>Get the credentials from the Auth0 dashboard.</p><pre><code>(defonce auth0-client
   (auth0/Auth0Client.
    (clj-&gt;js {:client_id ""
@@ -155,6 +132,10 @@ Read more about the npm package imports from <a href="https://shadow-cljs.github
              :redirect_uri""
              })))
 </code></pre><p><a id="orgd80d997"></a></p><h2 id="login-with-redirect">Login With Redirect</h2><pre><code>(defn login [] (.loginWithRedirect auth0-client))
+
+(defn login-button []
+    [:button
+      {:on-click login} "Login"])
 </code></pre><p><a id="org68e7609"></a></p><h2 id="handle-redirect-or-initialize-token-silently">Handle Redirect or Initialize token silently</h2><p>After successfull redirect the the id token call <code>auth0client.handleRedirectCallback</code>.</p><pre><code>(defn handle-auth-redirect []
   (-&gt;
    (.handleRedirectCallback auth0client)
