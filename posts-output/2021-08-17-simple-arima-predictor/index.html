@@ -2,12 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>tvaisanen.com: Posts by Toni Väisänen </title>
+    <title>tvaisanen.com: Simple ARIMA Predictor</title>
     
-    <meta name="description" content="Personal Site">
-    <meta name="keywords" content="">
-    
-    <link rel="canonical" href="http://tvaisanen.com/authors-output/Toni Väisänen/">
+<meta name="keywords" content="Auth0,Python,Datahike,Data Science,Numpy,Clojure,ClojureScript,Datalog,Shadow-CLJS,Statsmodels,Pandas,JS Interop">
+
+<meta name="description" content="Create Random Sample Data">
+
+<meta property="og:description" content="Create Random Sample Data">
+
+<meta property="og:url" content="http://tvaisanen.com/posts-output/2021-08-17-simple-arima-predictor/" />
+<meta property="og:title" content="Simple ARIMA Predictor" />
+<meta property="og:type" content="article" />
+
+    <link rel="canonical" href="http://tvaisanen.com/posts-output/2021-08-17-simple-arima-predictor/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Source+Sans+Pro&display=swap" rel="stylesheet">
@@ -105,33 +112,93 @@
         <div class="col-lg-12">
             <div id="content">
                 
-<div id="posts">
-  <div id="page-header" class="post-header">
-    <h2>Posts by Toni Väisänen</h2>
-  </div>
-  
-  <h4>2021 August</h4>
-  <ul>
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">August 17, 2021</div>
+        
+    </div>
+    <h2>Simple ARIMA Predictor</h2>
+</div>
+<div>
     
-    <li>
-      Aug 17 - <a href="/posts-output/2021-08-17-simple-arima-predictor/">Simple ARIMA Predictor</a>
-    </li>
+    <pre><code class="python">import pandas as pd
+import numpy as np
+from statsmodels.tsa.arima.model import ARIMA
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.set_theme(style="darkgrid")
+</code></pre><h2 id="create-random-sample-data">Create Random Sample Data</h2><pre><code class="python">sample = pd.DataFrame(columns=["data"], data=np.random.normal(0,1,250).cumsum())
+sample.plot(figsize=(15,5))
+</code></pre><p><img src="img/2021-08-17-simple-arima-predictor/output_3_1.png" alt="png" /></p><h2 id="predict-values">Predict Values</h2><p>Use <code>lookback</code> as training length for the predictor.</p><pre><code class="python">lookback = 30
+predictions = np.empty(sample.shape[0])
+
+for i in range(lookback, sample.shape[0]):
+    x = sample.data.values[i-lookback:i]
+    # Initialize random walk ARIMA model
+    # https://otexts.com/fpp2/non-seasonal-arima.html
+    mod = ARIMA(x, order=(0,1,0))
+    # Fit data
+    res = mod.fit()
+    # Predict the the value
+    predictions[i] = res.forecast(1)
+
+sample['pred'] = predictions
+</code></pre><pre><code class="python">fig,ax = plt.subplots(1,1,figsize=(15,5))
+
+ax.axvspan(       0,        lookback, 0, 1, alpha=0.1, color='orange')
+ax.axvspan(lookback, sample.shape[0], 0, 1, alpha=0.1, color='green')
+
+sample.pred[lookback:-1].plot(ax=ax, linestyle='dashed')
+sample.data.plot(ax=ax)
+plt.show()
+</code></pre><p><img src="img/2021-08-17-simple-arima-predictor/output_6_0.png" alt="png" /></p><h2 id="evaluate-prediction">Evaluate Prediction</h2><pre><code class="python">from sklearn.metrics import mean_squared_error
+
+mean_squared_error(sample.pred[lookback:-1], sample.data[lookback:-1])
+</code></pre><pre><code>0.9786439154503027
+</code></pre>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
     
-  </ul>
-  
-  <h4>2021 January</h4>
-  <ul>
+    <a href="/tags-output/Python/">Python</a>
     
-    <li>
-      Jan 14 - <a href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/">Getting Started With Datalog and Datahike</a>
-    </li>
+    <a href="/tags-output/Data%20Science/">Data Science</a>
     
-    <li>
-      Jan 09 - <a href="/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/">Auth0 SPA login flow with Shadow CLJS</a>
-    </li>
+    <a href="/tags-output/Numpy/">Numpy</a>
     
-  </ul>
-  
+    <a href="/tags-output/Statsmodels/">Statsmodels</a>
+    
+    <a href="/tags-output/Pandas/">Pandas</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        
+        <a class="right" href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/">Getting Started With Datalog and Datahike &raquo;</a>
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        var disqus_config = function () {
+            this.page.url = "http://tvaisanen.com/posts-output/2021-08-17-simple-arima-predictor/";
+            this.page.identifier = "Simple ARIMA Predictor";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//tvaisanen.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    
+
+
 </div>
 
             </div>

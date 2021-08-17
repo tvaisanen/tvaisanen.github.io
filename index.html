@@ -52,6 +52,8 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Recent Posts</li>
                         
+                        <li><a href="/posts-output/2021-08-17-simple-arima-predictor/">Simple ARIMA Predictor</a></li>
+                        
                         <li><a href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/">Getting Started With Datalog and Datahike</a></li>
                         
                         <li><a href="/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/">Auth0 SPA login flow with Shadow CLJS</a></li>
@@ -62,17 +64,27 @@
                         <li class="divider"></li>
                         <li class="dropdown-header">Tags</li>
                         
+                        <li><a href="/tags-output/Auth0/">Auth0</a></li>
+                        
+                        <li><a href="/tags-output/Python/">Python</a></li>
+                        
                         <li><a href="/tags-output/Datahike/">Datahike</a></li>
+                        
+                        <li><a href="/tags-output/Data%20Science/">Data Science</a></li>
+                        
+                        <li><a href="/tags-output/Numpy/">Numpy</a></li>
                         
                         <li><a href="/tags-output/Clojure/">Clojure</a></li>
                         
-                        <li><a href="/tags-output/Datalog/">Datalog</a></li>
-                        
-                        <li><a href="/tags-output/Auth0/">Auth0</a></li>
-                        
                         <li><a href="/tags-output/ClojureScript/">ClojureScript</a></li>
                         
+                        <li><a href="/tags-output/Datalog/">Datalog</a></li>
+                        
                         <li><a href="/tags-output/Shadow-CLJS/">Shadow-CLJS</a></li>
+                        
+                        <li><a href="/tags-output/Statsmodels/">Statsmodels</a></li>
+                        
+                        <li><a href="/tags-output/Pandas/">Pandas</a></li>
                         
                         <li><a href="/tags-output/JS%20Interop/">JS Interop</a></li>
                         
@@ -96,138 +108,77 @@
 <div id="post">
     <div class="post-header">
     <div id="post-meta" class="row">
-        <div class="col-lg-6">January 14, 2021</div>
+        <div class="col-lg-6">August 17, 2021</div>
         
     </div>
-    <h2>Getting Started With Datalog and Datahike</h2>
+    <h2>Simple ARIMA Predictor</h2>
 </div>
 <div>
     
-    <h1 id="table-of-contents">Table of Contents</h1><ol><li><a href="#org10812a7">Add dependencies and create a database</a></li><li><a href="#orgda6af90">Add Example Data</a></li><li><a href="#org6e549e6">Basic Queries</a><ol><li><a href="#org26f23ea">Basic query with explicit properties.</a></li><li><a href="#org4e1a75e">Pull all properties</a></li><li><a href="#orgd96072d">Add a predicate function</a></li><li><a href="#orga8338e5">Add a second predicate</a></li></ol></li><li><a href="#org255f136">Transactions</a></li><li><a href="#orgcd9ca35">History</a></li></ol><p><a id="org926352f"></a></p><ul><li>What is datalog <a href="https://en.wikipedia.org/wiki/Datalog">https://en.wikipedia.org/wiki/Datalog</a>.</li><li>Learn datalog  <a href="https://learndatalogtoday.org">https://learndatalogtoday.org</a>.</li><li>Database implementations:
-<ul><li><a href="https://www.datomic.com/">https://www.datomic.com/</a></li><li><a href="https://github.com/tonsky/datascript">https://github.com/tonsky/datascript</a></li><li><a href="https://github.com/replikativ/datahike">https://github.com/replikativ/datahike</a></li></ul></li></ul><p><a id="org10812a7"></a></p><h2 id="add-dependencies-and-create-a-database">Add dependencies and create a database</h2><pre><code>:dependencies [[org.clojure/clojure "1.10.1"]
-               [io.replikativ/datahike "0.3.2"]]
-</code></pre><p>Import Datahike API as d and from export-db for DB introspection and create basic configuration for an in-memory database.</p><pre><code>(ns datahike-test.core
-  (:require [datahike.api :as d]
-            [datahike.migrate :refer [export-db]])
-  (:gen-class))
+    <pre><code class="python">import pandas as pd
+import numpy as np
+from statsmodels.tsa.arima.model import ARIMA
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-(def cfg {:schema-flexibility :read ;; allow write without explicit schema
-          :store {:backend :mem}})  ;; use in-memory database
+sns.set_theme(style="darkgrid")
+</code></pre><h2 id="create-random-sample-data">Create Random Sample Data</h2><pre><code class="python">sample = pd.DataFrame(columns=["data"], data=np.random.normal(0,1,250).cumsum())
+sample.plot(figsize=(15,5))
+</code></pre><p><img src="img/2021-08-17-simple-arima-predictor/output_3_1.png" alt="png" /></p><h2 id="predict-values">Predict Values</h2><p>Use <code>lookback</code> as training length for the predictor.</p><pre><code class="python">lookback = 30
+predictions = np.empty(sample.shape[0])
 
-(d/create-database cfg)
+for i in range(lookback, sample.shape[0]):
+    x = sample.data.values[i-lookback:i]
+    # Initialize random walk ARIMA model
+    # https://otexts.com/fpp2/non-seasonal-arima.html
+    mod = ARIMA(x, order=(0,1,0))
+    # Fit data
+    res = mod.fit()
+    # Predict the the value
+    predictions[i] = res.forecast(1)
 
-(def conn (d/connect cfg))
-</code></pre><p><a id="orgda6af90"></a></p><h2 id="add-example-data">Add Example Data</h2><pre><code>(d/transact conn {:tx-data [{:db/id 4
-                             :job "Clojure Fullstack"
-                             :position :fullstack-developer
-                             :languages #{:javascript :clojure}}
-                            {:db/id -1
-                             :job "Clojure Backend Developer"
-                             :position :backend-developer
-                             :languages #{:clojure}}
-                            {:db/id -1
-                             :job "Javascript Fullstack"
-                             :position :fullstack-developer
-                             :languages #{:javascript}}]})
-</code></pre><p>Create DB dump for Datoms to a file for introspection</p><pre><code>(export-db @conn "./eavt-dump")
+sample['pred'] = predictions
+</code></pre><pre><code class="python">fig,ax = plt.subplots(1,1,figsize=(15,5))
 
-#datahike/Datom [4 :job "Clojure Fullstack" 536870914 true]
-#datahike/Datom [4 :languages #{:javascript :clojure} 536870914 true]
-#datahike/Datom [4 :position :fullstack-developer 536870914 true]
+ax.axvspan(       0,        lookback, 0, 1, alpha=0.1, color='orange')
+ax.axvspan(lookback, sample.shape[0], 0, 1, alpha=0.1, color='green')
 
-#datahike/Datom [5 :job "Clojure Backend Developer" 536870915 true]
-#datahike/Datom [5 :languages #{:clojure} 536870915 true]
-#datahike/Datom [5 :position :backend-developer 536870915 true]
+sample.pred[lookback:-1].plot(ax=ax, linestyle='dashed')
+sample.data.plot(ax=ax)
+plt.show()
+</code></pre><p><img src="img/2021-08-17-simple-arima-predictor/output_6_0.png" alt="png" /></p><h2 id="evaluate-prediction">Evaluate Prediction</h2><pre><code class="python">from sklearn.metrics import mean_squared_error
 
-#datahike/Datom [6 :job "Javascript Fullstack" 536870916 true]
-#datahike/Datom [6 :languages #{:javascript} 536870916 true]
-#datahike/Datom [6 :position :fullstack-developer 536870916 true]
-</code></pre><p><a id="org6e549e6"></a></p><h2 id="basic-queries">Basic Queries</h2><p><a id="org26f23ea"></a></p><h3 id="basic-query-with-explicit-properties">Basic query with explicit properties.</h3><pre><code>(d/q '[:find ?e ?title ?langs
-       :where
-       [?e :position ?title]
-       [?e :languages ?langs]]
-     @conn)
-
-#{[5 :backend-developer #{:clojure}]
-  [6 :fullstack-developer #{:javascript}]
-  [4 :fullstack-developer #{:javascript :clojure}]}
-</code></pre><p><a id="org4e1a75e"></a></p><h3 id="pull-all-properties">Pull all properties</h3><p>Get all the jobs for clojure fullstack. Use the <code>(pull? ?e [*])</code> to
-pull all fields of entity <code>?e</code> and use the ellipsis <code>...</code> to pull a set of
-entities instead just of the first one.</p><pre><code>(d/q '[:find [(pull ?e [*]) ...]
-       :where
-       [?e :position ?title]
-       [?e :languages ?langs]]
-     @conn)
-
-[{:db/id 4,
-  :job "Clojure Fullstack",
-  :languages #{:javascript :clojure},
-  :position :fullstack-developer}
- {:db/id 6,
-  :job "Javascript Fullstack",
-  :languages #{:javascript},
-  :position :fullstack-developer}
- {:db/id 5,
-  :job "Clojure Backend Developer",
-  :languages #{:clojure},
-  :position :backend-developer}]
-</code></pre><p><a id="orgd96072d"></a></p><h3 id="add-a-predicate-function">Add a predicate function</h3><p>Filter clojure jobs.</p><pre><code>(d/q '[:find [(pull ?e [*]) ...]
-       :in $ [?l]
-       :where
-       [?e :position ?title]
-       [?e :languages ?langs]
-       [(contains? ?langs ?l)]]
-     @conn
-     [:clojure])
-
-[{:db/id 4,
-  :job "Clojure Fullstack",
-  :languages #{:javascript :clojure},
-  :position :fullstack-developer}
- {:db/id 5,
-  :job "Clojure Backend Developer",
-  :languages #{:clojure},
-  :position :backend-developer}]
-</code></pre><p><a id="orga8338e5"></a></p><h3 id="add-a-second-predicate">Add a second predicate</h3><p>Filter only the clojure backend jobs.</p><pre><code>(d/q '[:find [(pull ?e [*]) ...]
-       :in $ [?l ?p]
-       :where
-       [?e :position ?title]
-       [?e :languages ?langs]
-       [?e :position ?pos]
-       [(contains? ?langs ?l)]
-       [(= ?pos ?p)]]
-     @conn
-     [:clojure :backend-developer])
-
-[{:db/id 5,
-  :job "Clojure Backend Developer",
-  :languages #{:clojure},
-  :position :backend-developer}]
-</code></pre><p><a id="org255f136"></a></p><h2 id="todo-transactions">TODO Transactions</h2><ul><li>transaction introspection</li></ul><p><a id="orgcd9ca35"></a></p><h2 id="todo-history">TODO History</h2><ul><li>Query history</li></ul>
+mean_squared_error(sample.pred[lookback:-1], sample.data[lookback:-1])
+</code></pre><pre><code>0.9786439154503027
+</code></pre>
 </div>
 
 <div id="post-tags">
     <b>Tags: </b>
     
-    <a href="/tags-output/Datahike/">Datahike</a>
+    <a href="/tags-output/Python/">Python</a>
     
-    <a href="/tags-output/Clojure/">Clojure</a>
+    <a href="/tags-output/Data%20Science/">Data Science</a>
     
-    <a href="/tags-output/Datalog/">Datalog</a>
+    <a href="/tags-output/Numpy/">Numpy</a>
+    
+    <a href="/tags-output/Statsmodels/">Statsmodels</a>
+    
+    <a href="/tags-output/Pandas/">Pandas</a>
     
 </div>
 
 
     
     <div id="comments">
-        <a href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/#disqus_thread">View Comments</a>
+        <a href="/posts-output/2021-08-17-simple-arima-predictor/#disqus_thread">View Comments</a>
     </div>
     
 
     <div id="prev-next">
         
         
-        <a class="right" href="/posts-output/2021-01-09-shadow-cljs-auth0-spa-js/">Auth0 SPA login flow with Shadow CLJS &raquo;</a>
+        <a class="right" href="/posts-output/2021-01-14-getting-started-with-datalog-and-datahike/">Getting Started With Datalog and Datahike &raquo;</a>
         
     </div>
 </div>
