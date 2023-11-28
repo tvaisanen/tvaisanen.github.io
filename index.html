@@ -11,24 +11,29 @@
       referrerpolicy="no-referrer"
     />
   </head>
+  <style>
+    li {
+      list-style-type: none;
+    }
+  </style>
   <script>
-   document.addEventListener('DOMContentLoaded', () => {
-       // Get all "navbar-burger" elements
-       const $navbarBurgers = Array
-           .prototype
-           .slice
-           .call(document.querySelectorAll('.navbar-burger'), 0);
+    document.addEventListener("DOMContentLoaded", () => {
+      // Get all "navbar-burger" elements
+      const $navbarBurgers = Array.prototype.slice.call(
+        document.querySelectorAll(".navbar-burger"),
+        0
+      );
 
-       $navbarBurgers.forEach( el => {
-           el.addEventListener('click', () => {
-               const target = el.dataset.target;
-               const $target = document.getElementById(target);
-               el.classList.toggle('is-active');
-               $target.classList.toggle('is-active');
-           });
-       });
-   });
- </script>
+      $navbarBurgers.forEach((el) => {
+        el.addEventListener("click", () => {
+          const target = el.dataset.target;
+          const $target = document.getElementById(target);
+          el.classList.toggle("is-active");
+          $target.classList.toggle("is-active");
+        });
+      });
+    });
+  </script>
   <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
@@ -55,102 +60,249 @@
       </div>
     </nav>
 
-    <section class="section is-medium">
-      <div class="columns is-centered">
-        <div
-          class="column is-4 is-flex is-flex-direction-column is-justify-content-center"
-        >
-          <h1 class="title is-1">Toni Väisänen</h1>
-          <h2 class="subtitle is-3">
-            Consultant, Full Stack Developer, ML engineer
-          </h2>
-        </div>
-        <div
-          class="column is-4 is-flex is-flex-direction-column is-justify-content-spaced-evenly"
-        >
-          <img class="image" src="./img/avatar.jpeg" />
-        </div>
-      </div>
-    </section>
-
-    <section class="section is-medium has-background-light">
-      <div class="tile is-ancestor">
-        <div class="tile mx-3">
-          <div class="card">
-            <div class="card-content">
-              <p class="subtitle is-3">
-                As a <strong>consultant</strong> I help clients find technical
-                solutions to their business problems and facilitate
-                communication between the stakeholders and the technical team.
-              </p>
+    <div class="columns is-centered">
+      <div
+        class="column is-8 is-8-widescreen is-5-fullhd is-flex is-flex-direction-column is-justify-content-center"
+      >
+        <section class="section">
+          <div class="columns is-centered">
+            <div
+              class="column is-6 is-flex is-flex-direction-column is-justify-content-center p-0"
+            >
+              <h1 class="title is-1">Toni Väisänen</h1>
+              <h2 class="subtitle is-3">Consulting</h2>
+              <h2 class="subtitle is-3">Software Engineering</h2>
+              <h2 class="subtitle is-3">Coaching & Mentoring</h2>
+            </div>
+            <div
+              class="column is-6 is-flex is-flex-direction-column is-justify-content-spaced-evenly"
+            >
+              <img class="image" src="./img/avatar.jpeg" />
             </div>
           </div>
-        </div>
-
-        <div class="tile mx-3">
-          <div class="card">
-            <div class="card-content">
-              <p class="subtitle is-3">
-                As a <strong>full-stack developer</strong>, I build technical
-                solutions for client's problems from user interfaces, and
-                backend services to infrastructure-as-code solutions.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="tile mx-3">
-          <div class="card">
-            <div class="card-content">
-              <p class="subtitle is-3">
-                As a <strong>machine learning engineer</strong>, I create,
-                validate and deploy predictive models.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section is-large">
-        <div class="columns is-centered">
-            <div class="column-4">
-                <a class="is-size-1 is-underlined" href="https://blog.tvaisanen.com">
-                    Read the Blog!
-                </a>
-            </div>
         </section>
-        <section class="section is-large has-background-light">
+        <hr />
+        <section class="section">
+          <p class="title">Services</p>
 
-      <div class="columns is-centered">
-        <div class="column is-5">
-          <div class="hero-body">
-            <div class="container">
-              <p class="title">Clojure for React Developers</p>
-              <p class="subtitle">Download the workshop material</p>
+          <!-- <div class="block">
+               <p class="is-size-4">
+               In today's digital era, software and data are the driving forces
+               behind the success of small and mid-sized companies like yours.
+               Embracing technology has the potential to revolutionize your
+               business operations, fuel growth, and give you a winning edge in
+               the market. That's where I step in.
+               </p>
+               </div>
+          -->
+          <p class="title is-5">Consulting & Contracting Services</p>
+
+          <div class="block">
+            <p class="is-size-4">
+              I am available for consulting and contracting work through
+
+              <a class="is-underlined has-text-black" href="https://metosin.com"
+                >Metosin</a
+              >, a software studio specialized in Clojure.
+            </p>
+          </div>
+
+          <p class="title is-5">Coaching & Mentoring for Software Engineers</p>
+
+          <div class="block">
+            <p class="is-size-4">
+              I offer coaching and mentoring as service for software consultans
+              in the early years of their careers.
+            </p>
+          </div>
+
+          <p class="title is-5">Mentoring Students and Career Changers</p>
+
+          <div class="block">
+            <p class="is-size-4">
+              I offer mentoring as a service for students and career changers
+              who are looking into getting into software consulting.
+            </p>
+          </div>
+        </section>
+
+        <hr />
+        <section class="section">
+          <p class="title">About</p>
+          <div class="block">
+            <p class="is-size-4">
+              I am a software consultant with seven years of experience from
+              which five years have been working in software consultancies. I
+              have a master's degree in CSE specializing in machine learning and
+              intelligent systems.
+              <br /><br />
+              I started my career in tech at the age of 26 with my first coding
+              internship year after restarting my academic career. I had studied
+              software development before in vocational school but at the time I
+              didn't really get it and I was more interested in playing guitar
+              and learning music. Therefore I ended up taking a detour in
+              studying music and music technology.
+              <br /><br />
+              Long story short, because of this I know how it feels to feel
+              behind while other people your age are far ahead industry
+              experience-wise. I can still remember the difficulties of the
+              early years of my career. That's why I want to work helping others
+              make the journey less painful.
+            </p>
+          </div>
+        </section>
+        <section class="section content">
+          <style>
+            div.contact {
+              text-align: center;
+              unicode-bidi: bidi-override;
+              direction: rtl;
+              font-weight: bold;
+            }
+          </style>
+          <p class="is-size-4 has-text-centered">Get in touch</p>
+          <div class="is-size-4 contact">moc.nenasiavt@tcatnoc</div>
+        </section>
+
+        <hr />
+
+        <section class="section content">
+          <p class="title">Articles</p>
+
+          <p class="subtitle">
+            <a
+              class="is-underlined has-text-black"
+              href="https://blog.tvaisanen.com"
+            >
+              blog.tvaisanen.com
+            </a>
+          </p>
+          <br />
+          <ul>
+            <li class="block">
+              <a
+                class="is-size-4 is-underlined has-text-black"
+                href="https://blog.tvaisanen.com/deploying-clojure-like-a-seasoned-hobbyist"
+              >
+                Deploying Clojure Like a Seasoned Hobbyist
+              </a>
+            </li>
+            <li class="block">
+              <a
+                class="is-size-4 is-underlined has-text-black"
+                href="https://blog.tvaisanen.com/take-your-linting-game-to-the-next-level"
+              >
+                Take Your Linting Game to the Next Level!
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="section content">
+          <p class="title">Talks</p>
+
+          <ul>
+            <li class="block">
+              <a
+                class="is-size-4 is-underlined has-text-black"
+                href="https://www.slideshare.net/metosin/serverless-clojure-and-ml-prototyping-an-experience-reportpdf"
+              >
+                Serverless Clojure and ML prototyping: an experience report
+                (slides)
+              </a>
+            </li>
+          </ul>
+        </section>
+        <hr />
+        <section class="section">
+          <p class="title">Workshops</p>
+          <div class="columns is-centered">
+            <div class="column is-6 p-0">
+              <div class="hero-body">
+                <div class="container">
+                  <p class="title is-4">Clojure for React Developers</p>
+                  <p class="subtitle">Download the workshop material</p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="column is-flex is-flex-direction-column is-6 is-justify-content-center"
+            >
+              <a
+                id="clojurescript-for-react-devs"
+                class="button is-large is-info"
+                href="/files/clojure-for-react-developers/latest.pdf"
+              >
+                Download
+              </a>
             </div>
           </div>
-        </div>
-        <div
-          class="column is-flex is-flex-direction-column is-3 is-justify-content-center"
-        >
-          <a
-            id="clojurescript-for-react-devs"
-            class="button is-large is-info"
-            href="/files/clojure-for-react-developers/latest.pdf"
-          >
-            Download
-          </a>
-        </div>
+        </section>
+        <hr />
+        <!-- <section class="section">
+             <p class="title">Contact</p>
+
+             <div class="block">
+             <p class="is-size-4">
+             Let's connect and discuss how I can help you.
+             </p>
+             </div>
+             <form>
+             <div class="field">
+             <label class="label">Name</label>
+             <div class="control">
+             <input class="input" type="text" />
+             </div>
+             </div>
+
+             <div class="field">
+             <label class="label">Email</label>
+             <div class="control has-icons-left has-icons-right">
+             <input class="input" type="email" />
+             <span class="icon is-small is-left">
+             <i class="fas fa-envelope"></i>
+             </span>
+             <span class="icon is-small is-right">
+             <i class="fas fa-exclamation-triangle"></i>
+             </span>
+             </div>
+             </div>
+
+             <div class="field">
+             <label class="label">Subject</label>
+             <div class="control">
+             <div class="select">
+             <select>
+             <option>Consulting/Contracting</option>
+             <option>Coaching/Mentoring</option>
+             </select>
+             </div>
+             </div>
+             </div>
+
+             <div class="field">
+             <label class="label">Message</label>
+             <div class="control">
+             <textarea class="textarea" placeholder="Textarea"></textarea>
+             </div>
+             </div>
+
+             <button class="button">Submit</button>
+             </form>
+             </section> -->
       </div>
-    </section>
+    </div>
     <footer class="footer">
       <div class="content has-text-centered">
         <p>
-          <strong>tvaisanen.com</strong>
+          <strong>&copy; tvaisanen.com</strong>
         </p>
       </div>
     </footer>
   </body>
-  <script defer data-domain="tvaisanen.com" src="https://plausible.io/js/script.js"></script>
+  <script
+    defer
+    data-domain="tvaisanen.com"
+    src="https://plausible.io/js/script.js"
+  ></script>
 </html>
